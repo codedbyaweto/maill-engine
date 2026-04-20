@@ -30,7 +30,7 @@ MailEngine is a modern email campaign management platform that allows users to c
 - Role-based access control
 - View and manage user permissions
 
-### ⚡ Performance & UX
+### Performance & UX
 - Skeleton loading states across all pages
 - Responsive UI for mobile and desktop
 - Fast navigation with Next.js routing
