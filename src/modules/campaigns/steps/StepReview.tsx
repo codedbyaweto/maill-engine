@@ -15,13 +15,25 @@ interface Props {
 
 export default function StepReview({ form, onNext, onBack, isLoading }: Props) {
     const values = form.getValues();
-    const { data: templatesData } = useGetTemplatesQuery();
+    const { data: templatesData } = useGetTemplatesQuery({
+        page: 0,
+        size: 10,
+    });
+
     const { data: lists } = useGetRecipientListsQuery();
 
-    const template = templatesData?.content.find((t) => t.id === values.templateId);
-    const selectedLists = (lists ?? []).filter((l) => values.recipientListIds.includes(l.id));
-    const totalRecipients = selectedLists.reduce((sum, l) => sum + l.recipientCount, 0);
+    const template = templatesData?.content.find(
+        (t) => t.id === Number(values.templateId)
+    );
 
+    const selectedLists = (lists ?? []).filter((l) =>
+        values.recipientListIds.includes(l.id)
+    );
+
+    const totalRecipients = selectedLists.reduce(
+        (sum, l) => sum + l.recipientCount,
+        0
+    );
     return (
         <div className="space-y-6 text-foreground bg-background">
             <div>

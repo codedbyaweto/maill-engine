@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { TemplateCard } from "@/components/templates/TemplateCard";
 import { useRouter } from "next/navigation";
 import type { Template } from "@/models/response/templateResponse";
@@ -7,16 +8,23 @@ import {
     useDeleteTemplateMutation,
     useDuplicateTemplateMutation
 } from "@/services/endpoints/templateApi";
+import { TemplateSkeleton } from "./TemplateGridSkeleton";
 
 interface TemplateGridProps {
     templates: Template[];
+    isLoading?: boolean;
 }
 
-export function TemplateGrid({ templates }: TemplateGridProps) {
+export function TemplateGrid({ templates, isLoading }: TemplateGridProps) {
+    const [mode] = useState<"drag" | "html" | "upload">("drag");
     const router = useRouter();
 
     const [deleteTemplate] = useDeleteTemplateMutation();
     const [duplicateTemplate] = useDuplicateTemplateMutation();
+
+    if (isLoading) {
+        return <TemplateSkeleton />;
+    }
 
     if (templates.length === 0) {
         return (
@@ -41,7 +49,7 @@ export function TemplateGrid({ templates }: TemplateGridProps) {
                     onDelete={() => deleteTemplate({ id: template.id })}
                     onDuplicate={() => duplicateTemplate({ id: template.id })}
                     onEdit={() =>
-                        router.push(`/templates/editor?id=${template.id}&mode=drag`)
+                        router.push(`/templates/editor?id=${template.id}&mode=${mode}`)
                     }
                 />
             ))}

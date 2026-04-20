@@ -1,10 +1,19 @@
-export type CampaignStatus =
-    | "draft"
-    | "scheduled"
-    | "sending"
-    | "sent"
-    | "cancelled"
-    | "failed";
+// export type CampaignStatus =
+//     | "draft"
+//     | "scheduled"
+//     | "sending"
+//     | "sent"
+//     | "cancelled"
+//     | "failed";
+
+// export type CampaignStatus =
+//     | "draft"
+//     | "scheduled"
+//     | "sending"
+//     | "sent"
+//     | "cancelled"
+//     | "failed"
+//     | "completed";
 
 export interface CampaignDto {
     id: number;
@@ -47,3 +56,35 @@ export interface CampaignJobStatus {
 export interface BaseResponse {
     message: string;
 }
+
+// models/response/campaignResponse.ts
+
+export type CampaignStatus =
+    | "draft"
+    | "scheduled"
+    | "sending"
+    | "sent"
+    | "cancelled"
+    | "failed"
+    | "completed";
+
+export type CampaignStats = {
+    totalSent: number;
+    totalOpened: number;
+    totalClicked: number;
+    totalBounced: number;
+};
+
+export type Campaign = {
+    id: number;
+    name: string;
+    subjectLine: string;
+    fromName: string;
+    fromEmail: string;
+    status: CampaignStatus;
+    createdAt: string;
+    scheduledAt?: string;
+    sentAt?: string;
+};
+
+export type CampaignWithStats = Campaign & CampaignStats;

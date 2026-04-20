@@ -62,12 +62,11 @@ export const campaignApi = baseApi.injectEndpoints({
             invalidatesTags: [{ type: tags.CAMPAIGN, id: "LIST" }],
         }),
 
-        sendCampaign: builder.mutation<BaseResponse, number>({
-            query: (id) => ({
+        sendCampaign: builder.mutation<BaseResponse, { id: number }>({
+            query: ({ id }) => ({
                 url: `/campaigns/${id}/send`,
                 method: "POST",
             }),
-            invalidatesTags: [{ type: tags.CAMPAIGN, id: "LIST" }],
         }),
 
         scheduleCampaign: builder.mutation<CampaignDto, { id: number } & ScheduleCampaignRequest>({

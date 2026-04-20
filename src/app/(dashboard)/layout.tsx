@@ -11,16 +11,17 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
     return (
-        <>
-            <ProtectedRoute>
+        <ProtectedRoute>
             <SidebarProvider defaultOpen={defaultOpen}>
-                <AppSideBar />
+                <AppSideBar/>
                 <main className="w-full">
-                    <DashboardNavbar />
-                    <div className="px-4 bg-gradient-to-b from-yellow-50 via-white to-transparent dark:from-black dark:via-zinc-900 dark:to-transparent">{children}</div>
+                    <DashboardNavbar/>
+                    <div
+                        className="px-4 bg-gradient-to-b from-yellow-50 via-white to-transparent dark:from-black dark:via-zinc-900 dark:to-transparent">
+                        {children}
+                    </div>
                 </main>
             </SidebarProvider>
-            </ProtectedRoute>
-        </>
-    );
+        </ProtectedRoute>
+    )
 }

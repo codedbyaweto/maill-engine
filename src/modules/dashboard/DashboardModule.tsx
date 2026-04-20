@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-
 import { Mail, Users, Plus, Menu, X } from "lucide-react";
 import MailEnginePieChart from "@/components/charts/PieChart";
 import PerformanceTrendChart from "@/components/charts/AreaChart";
@@ -17,10 +16,9 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
-import TeamModule from "@/modules/team/TeamModule";
-import {UserTable} from "@/components/team/UserTable";
+import { useRouter } from "next/navigation";
 import UserTableModule from "@/components/dashboard/UsersTable";
+import DashboardSkeleton from "@/components/dashboard/DashboardSkeleton";
 
 const funnelSteps = [
     { label: "Sent", value: 10000 },
@@ -45,7 +43,13 @@ const statusStyles: Record<string, string> = {
 
 const DashboardModule = () => {
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleCreate = () => {
         router.push("/campaigns/create");
@@ -53,13 +57,14 @@ const DashboardModule = () => {
 
     const handleUpload = () => {
         router.push("/recipients/upload");
-    }
+    };
+
+    if (isLoading) return <DashboardSkeleton />;
 
     return (
         <div className="p-4 sm:p-6 lg:p-8 space-y-8 max-w-7xl mx-auto bg-gradient-to-b from-yellow-50 via-white to-transparent dark:from-black dark:via-zinc-900 dark:to-transparent">
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
                 <div className="flex items-center justify-between w-full lg:w-auto">
                     <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
                         Dashboard
@@ -74,7 +79,6 @@ const DashboardModule = () => {
                 </div>
 
                 <div className={`flex-col lg:flex lg:flex-row gap-2 sm:gap-3 w-full lg:w-auto ${open ? "flex" : "hidden lg:flex"}`}>
-
                     <Button variant="yellow" onClick={handleCreate} className="gap-2 w-full sm:w-auto">
                         <Plus size={16} /> New Campaign
                     </Button>
@@ -102,7 +106,6 @@ const DashboardModule = () => {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-
                 </div>
             </div>
 
@@ -145,7 +148,6 @@ const DashboardModule = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-10">
-
                 <div className="xl:col-span-2 space-y-6 lg:space-y-10">
                     <Card className="rounded-2xl">
                         <CardHeader className="text-center font-bold text-base sm:text-lg">
@@ -167,7 +169,6 @@ const DashboardModule = () => {
                 </div>
 
                 <div className="space-y-6 lg:space-y-10">
-
                     <Card className="rounded-2xl">
                         <CardHeader className="text-center font-bold text-base sm:text-lg">
                             Conversion Funnel
@@ -204,7 +205,6 @@ const DashboardModule = () => {
                             <div>⚠️ Bounce spike detected</div>
                         </CardContent>
                     </Card>
-
                 </div>
             </div>
 
@@ -219,9 +219,9 @@ const DashboardModule = () => {
                             key={i}
                             className="flex items-center justify-between p-3 rounded-xl border hover:bg-muted/50"
                         >
-                <span className="font-medium text-sm sm:text-base">
-                    {c.name}
-                </span>
+                            <span className="font-medium text-sm sm:text-base">
+                                {c.name}
+                            </span>
 
                             <Badge className={statusStyles[c.status]}>
                                 {c.status}
@@ -232,7 +232,6 @@ const DashboardModule = () => {
             </Card>
 
             <UserTableModule />
-
         </div>
     );
 };

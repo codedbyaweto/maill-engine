@@ -4,7 +4,7 @@ type Props = {
     placeholder?: string;
     value: string;
     onChange: any;
-    onBlur: any;
+    onBlur?: any;
     error?: string;
     leftIcon?: React.ReactNode;   // 👈 NEW
     rightIcon?: React.ReactNode;  // 👈 NEW
